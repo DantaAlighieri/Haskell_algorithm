@@ -1,0 +1,37 @@
+reverse nil                           = nil .
+reverse (cons X XS)                   = append (reverse XS) (cons X nil) .
+
+shuffle nil                           = nil .
+shuffle (cons X XS)                   = cons X (reverse (shuffle XS)) .
+
+range 0                               = nil .
+range (s X)                           = cons X (range X) .
+
+lt X 0                                = false .
+lt 0 (s Y)                            = true .
+lt (s X) (s Y)                        = lt X Y .
+
+if_pair nil nil P                     = nil .
+if_pair nil X P                       = cons X nil .
+if_pair X nil P                       = cons X nil .
+if_pair (cons X XS) (cons Y YS) true  = cons X (pair XS (cons Y YS)) .
+if_pair (cons X XS) (cons Y YS) false = cons Y (pair (cons X XS) YS) .
+
+pair nil nil                          = nil .
+pair nil X                            = cons X nil .
+pair X nil                            = cons X nil .
+pair (cons X XS) (cons Y YS)          = if_pair (cons X XS) (cons Y YS) (lt X Y)  .
+
+split_sub (nil nil) P                 = nil .
+split_sub (XS YS) true                = XS .
+split_sub (XS YS) false               = YS .
+
+split nil                             = (nil nil) .
+split (cons X nil)                    = ((cons X nil) nil) .
+split (cons X (cons Y ZS))            = ((cons X (split_sub (split ZS) true)) (cons Y (split_sub (split ZS) false))) .
+
+msort nil                             = nil .
+msort (cons X nil)                    = (cons X nil) .
+msort XS                              = pair (msort (split_sub (split XS) true)) (msort (split_sub (split XS) false)) .
+
+main = msort (shuffle (range 4)) .

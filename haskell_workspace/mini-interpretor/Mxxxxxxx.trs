@@ -1,0 +1,14 @@
+-- Change the filename appropriately.
+-- Define msort.
+-- Delete this comment.
+
+reverse nil         = nil .
+reverse (cons X XS) = append (reverse XS) (cons X nil) .
+
+shuffle nil         = nil .
+shuffle (cons X XS) = cons X (reverse (shuffle XS)) .
+
+range 0     = nil .
+range (s X) = cons X (range X) .
+
+main = msort (shuffle (range 100)) .

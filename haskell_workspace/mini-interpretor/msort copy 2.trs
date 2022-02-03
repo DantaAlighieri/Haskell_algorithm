@@ -1,0 +1,37 @@
+reverse nil                           = nil .
+reverse (cons X XS)                   = append (reverse XS) (cons X nil) .
+
+append nil YS         = YS .
+append (cons X XS) YS = cons X (append XS YS) .
+
+shuffle nil                           = nil .
+shuffle (cons X XS)                   = cons X (reverse (shuffle XS)) .
+
+range 0                               = nil .
+range (s X)                           = cons X (range X) .
+
+not true  = false .
+not false = true .
+
+lt X 0                                = false .
+lt 0 (s Y)                            = true .
+lt (s X) (s Y)                        = lt X Y .
+
+if_pair (cons X XS) (cons Y YS) true  = cons X (pair XS (cons Y YS)) .
+if_pair (cons X XS) (cons Y YS) false = cons Y (pair (cons X XS) YS) .
+
+pair nil X                            = X .
+pair X nil                            = X .
+pair (cons X XS) (cons Y YS)          = if_pair (cons X XS) (cons Y YS) (lt X Y)  .
+
+split nil                             = nil nil .
+split (cons X nil)                    = (cons X nil) nil .
+split (cons X (cons Y ZS))            = split X Y (split ZS) .
+split X Y (XS YS)                     = (cons X XS) (cons Y YS) .
+
+msort nil                             = nil .
+msort (cons X nil)                    = (cons X nil) .
+msort (cons X XS)                     = msort (split (cons X XS)) .
+msort YS ZS                           = pair (msort YS) (msort ZS) .
+
+main = msort (shuffle (range 4)) .
